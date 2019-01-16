@@ -20,7 +20,7 @@ Also note that if the user buys three milk then for the first two milk user shou
 
 ### Task
 
-Taks is to build a ruby program which when execute would ask user to list all the itesm purchased in any order. Once user has listed all the items then print the total cost. You need to build solution for the given items and you do not need to worry about items which would be added in future -- in other words the pricing table is static.
+Task is to build a ruby program which when execute would ask user to list all the itesm purchased in any order. Once user has listed all the items then print the total cost. You need to build solution for the given items and you do not need to worry about items which would be added in future -- in other words the pricing table is static.
 
 ``` 
 $ ruby price_calculator.rb
