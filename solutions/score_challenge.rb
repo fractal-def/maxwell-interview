@@ -1,1 +1,0 @@
-puts 'hello score challenge'
