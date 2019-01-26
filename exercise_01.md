@@ -1,4 +1,4 @@
-### Exercise 1: DHH score challenge
+## Exercise 1: DHH score challenge
 
 David Heinemeier Hansson's github url is `https://github.com/dhh`.
 
@@ -20,7 +20,8 @@ Any other event = 1
 ```
 
 
-#### Task
+### Task
+
 Write a ruby program which when executed prints the score of https://github.com/dhh . The answer printed on the terminal should be like this.
 
 Calculate the score based on the data returned from only the first page of that API call. Do not worry about pagination.
