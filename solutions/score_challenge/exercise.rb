@@ -19,9 +19,9 @@ end
 
 def event_counts_message(event_type_count)
   if event_type_count.size > 0
-    event_type_count.map do |k, v|
+    event_type_count.map do |score_type, score_count|
       <<~HEREDOC
-        #{k} = #{v}
+        #{score_type} = #{score_count}
       HEREDOC
     end
   end
