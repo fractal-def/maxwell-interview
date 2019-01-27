@@ -54,16 +54,15 @@ end
 def calculate_price_of_items(item, quantity)
   promotion_price = PRICE_TABLE[item]['promotion_price']
   promotion_quantity = PRICE_TABLE[item]['promotion_quantity']
-  item_base_price = PRICE_TABLE[item]['base_price']
-  promotion_exists = promotion_price && promotion_quantity
+  base_price = PRICE_TABLE[item]['base_price']
 
-  if promotion_exists
+  if promotion_price && promotion_quantity
     num_items_at_full_price = quantity % promotion_quantity
     num_items_at_promotion_price = quantity - num_items_at_full_price
 
-    (num_items_at_full_price * item_base_price) + (num_items_at_promotion_price * promotion_price)
+    (num_items_at_full_price * base_price) + (num_items_at_promotion_price * promotion_price)
   else
-    quantity * item_base_price
+    quantity * base_price
   end
 end
 
@@ -105,12 +104,12 @@ def receipt(items_purchased)
 
 end
 
-def calculate_groceries(basket = [])
+def calculated_groceries(basket = [])
   validated_items = validate_items(basket)
   purchased_items = purchase_items(validated_items)
 
-  puts receipt(purchased_items)
+  receipt(purchased_items)
 end
 
 puts 'Please enter all the items purchased separated by a comma:'
-calculate_groceries(gets)
+puts calculated_groceries(gets)
