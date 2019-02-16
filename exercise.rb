@@ -12,17 +12,23 @@ class Score
     'OtherEvent' => 1
   }
   
-  def initialize
+  def initialize(username)
+    @username = username
     @score = 0
+    get_events
     result
   end
   
   private
   
+  def get_events
+    events = HTTParty.get("https://api.github.com/users/#{@username}/events/public")
+  end
+  
   def result
-    puts "DHH's github score is #{@score}"
+    puts "#{@username}'s github score is #{@score}"
   end
   
 end
 
-Score.new
+Score.new('DHH')
