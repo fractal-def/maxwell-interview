@@ -2,7 +2,7 @@ require "httparty"
 
 class Score
   
-  TYPES = {
+  TYPE_VALUES = {
     'IssuesEvent' => 7,
     'IssueCommentEvent' => 6,
     'PushEvent' => 5,
@@ -16,13 +16,20 @@ class Score
     @username = username
     @score = 0
     get_events
+    calculate_score
     result
   end
   
   private
   
   def get_events
-    events = HTTParty.get("https://api.github.com/users/#{@username}/events/public")
+    @events = HTTParty.get("https://api.github.com/users/#{@username}/events/public", {format: :json}).parsed_response
+  end
+  
+  def calculate_score
+    event_types = @events.collect {|event| event['type']}
+    scores = event_types.map { |type| TYPE_VALUES[type] }
+    @score = scores.reduce(0, :+)
   end
   
   def result
@@ -31,4 +38,4 @@ class Score
   
 end
 
-Score.new('DHH')
+Score.new('dhh')
