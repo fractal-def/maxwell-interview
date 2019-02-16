@@ -8,9 +8,9 @@ class Score
     'PushEvent' => 5,
     'PullRequestReviewCommentEvent' => 4,
     'WatchEvent' => 3,
-    'CreateEvent' => 2,
-    'OtherEvent' => 1
+    'CreateEvent' => 2
   }
+  
   
   def initialize(username)
     @username = username
@@ -28,7 +28,7 @@ class Score
   
   def calculate_score
     event_types = @events.collect {|event| event['type']}
-    scores = event_types.map { |type| TYPE_VALUES[type] }
+    scores = event_types.map { |type| TYPE_VALUES[type] || 1 }
     @score = scores.reduce(0, :+)
   end
   
@@ -38,4 +38,4 @@ class Score
   
 end
 
-Score.new('dhh')
+Score.new('DHH')
