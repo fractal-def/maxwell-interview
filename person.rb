@@ -17,4 +17,14 @@ class Person < ActiveRecord::Base
       self.team = team
       self.handle = team + (count + 1).to_s
   end
+
+  def validate_email
+    self.validated = true
+    if self.save
+      Rails.logger.info "USER: User ##{self.id} validated email successfully."
+      true
+    else
+      false
+    end
+  end
 end

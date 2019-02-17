@@ -11,19 +11,15 @@ class People < ActionController::Base
     end
   end
 
-  def validateEmail
-    @user = Person.find_by_slug(params[:slug])
-    if @user.present?
-      @user.validated = true
-      @user.save
-      Rails.logger.info "USER: User ##{@person.id} validated email successfully."
-      Emails.admin_user_validated(@user)
-    end
-  end
 
   private
   def create_person
     @person = Person.new(params[:person])
     @person.add_initial_attributes
+  end
+
+  def validate_email
+    @user = Person.find_by(slug: params[:slug])
+    Emails.admin_user_validated(@user) if @user && @user.validate_email
   end
 end
