@@ -4,7 +4,7 @@ class People < ActionController::Base
 
   def create
     if @person.save
-      Emails.add_account
+      Emails.admin_new_user(@person)
       redirect_to @person, :notice => "Account added!"
     else
       render :new
@@ -17,8 +17,7 @@ class People < ActionController::Base
       @user.validated = true
       @user.save
       Rails.logger.info "USER: User ##{@person.id} validated email successfully."
-      Emails.admin_user_validated
-      Emails.welcome(@user).deliver!
+      Emails.admin_user_validated(@user)
     end
   end
 

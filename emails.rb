@@ -2,8 +2,6 @@ class Emails < ActionMailer::Base
   default from: 'foo@example.com'
 
   class << self
-     alias_method :admin_user_validated, :email_admins
-     alias_method :admin_new_user, :email_admins
      alias_method :admin_removing_unvalidated_users, :email_admins
    end
 
@@ -12,14 +10,19 @@ class Emails < ActionMailer::Base
     mail to: @person
   end
 
-  def add_account(person)
-    validate_email(person).deliver
-    admin_new_user.deliver
-  end
-
   def validate_email(person)
     @person = person
     mail to: @person
+  end
+
+  def admin_new_user(person)
+    validate_email(person).deliver
+    email_admins.deliver
+  end
+
+  def admin_user_validated(person)
+    email_admins
+    welcome(person).deliver!
   end
 
   def email_admins
