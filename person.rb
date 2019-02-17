@@ -3,6 +3,7 @@ class Person < ActiveRecord::Base
 
   scope :administrators -> { where(admin: true) }
   scope :admins_with_email -> { administrators.where.not(email: nil) }
+  scope :unvalidated -> { where("created_at < ? AND validated = ?", Time.now - 30.days, false)}
 
   def add_initial_attributes
     self.slug = "ABC123#{Time.now.to_i.to_s}1239827#{rand(10000)}"
