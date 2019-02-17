@@ -6,6 +6,6 @@ namespace :accounts do
       Rails.logger.info "Removing unvalidated user #{person.email}"
       person.destroy
     end
-    Emails.admin_removing_unvalidated_users(Person.administrators, @people).deliver
+    Emails.admin_removing_unvalidated_users.deliver
   end
 end
