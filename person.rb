@@ -1,6 +1,8 @@
 class Person < ActiveRecord::Base
   attr_accessible :first_name, :last_name, :email, :admin, :slug, :validated, :handle, :team
 
+  scope :administrators -> { where(admin: true) }
+
   def add_initial_attributes
     self.slug = "ABC123#{Time.now.to_i.to_s}1239827#{rand(10000)}"
     self.admin = false
