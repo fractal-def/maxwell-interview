@@ -12,6 +12,11 @@ class Emails < ActionMailer::Base
     mail to: @person
   end
 
+  def add_account(person)
+    validate_email(person).deliver
+    admin_new_user.deliver
+  end
+
   def validate_email(person)
     @person = person
     mail to: @person

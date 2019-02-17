@@ -4,8 +4,7 @@ class People < ActionController::Base
 
   def create
     if @person.save
-      Emails.validate_email(@person).deliver
-      Emails.admin_new_user.deliver
+      Emails.add_account
       redirect_to @person, :notice => "Account added!"
     else
       render :new
