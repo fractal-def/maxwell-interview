@@ -1,26 +1,8 @@
 class People < ActionController::Base
-
+  before_action :create_person, only: [:create]
   # ... Other REST actions
 
   def create
-    @person = Person.new(params[:person])
-
-    slug = "ABC123#{Time.now.to_i.to_s}1239827#{rand(10000)}"
-    @person.slug = slug
-    @person.admin = false
-
-    if (Person.count + 1).odd?
-      team = "UnicornRainbows"
-      handle = "UnicornRainbows" + (Person.count + 1).to_s
-      @person.handle = handle
-      @person.team = team
-    else
-      team = "LaserScorpions"
-      handle = "LaserScorpions" + (Person.count + 1).to_s
-      @person.handle = handle
-      @person.team = team
-    end
-
     if @person.save
       Emails.validate_email(@person).deliver
       @admins = Person.where(:admin => true)
@@ -43,4 +25,9 @@ class People < ActionController::Base
     end
   end
 
+  private
+  def create_person
+    @person = Person.new(params[:person])
+    @person.add_initial_attributes
+  end
 end
