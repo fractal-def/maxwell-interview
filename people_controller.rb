@@ -14,8 +14,12 @@ class People < ActionController::Base
 
   private
   def create_person
-    @person = Person.new(params[:person])
+    @person = Person.new(create_person)
     @person.add_initial_attributes
+  end
+
+  def create_params
+    params.require(:person).permit(:first_name, :last_name, :email, :admin, :slug, :validated, :handle, :team)
   end
 
   def validate_email
