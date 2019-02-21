@@ -10,13 +10,8 @@ class Emails < ActionMailer::Base
     mail to: @person
   end
 
-  def validate_email(person)
-    @person = person
-    mail to: @person
-  end
-
   def admin_new_user(person)
-    validate_email(person).deliver
+    welcome(person).deliver
     email_admins.deliver
   end
 
