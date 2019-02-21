@@ -1,6 +1,6 @@
 class Person < ActiveRecord::Base
-  attr_accessible :first_name, :last_name, :email, :admin, :slug, :validated, :handle, :team
-
+  UNICORN_RAINBOWS = "UnicornRainbows"
+  LASER_SCORPIONS = "LaserScorpions"
   scope :administrators -> { where(admin: true) }
   scope :admins_with_email -> { administrators.where.not(email: nil) }
   scope :unvalidated -> { where("created_at < ? AND validated = ?", Time.now - 30.days, false)}
@@ -10,7 +10,7 @@ class Person < ActiveRecord::Base
     self.admin = false
     count = self.class.count
 
-    team = (count + 1).odd? ? "UnicornRainbows" : "LaserScorpions"
+    team = (count + 1).odd? ? UNICORN_RAINBOWS : LASER_SCORPIONS
     set_team_and_handle(team)
   end
 
