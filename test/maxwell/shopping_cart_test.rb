@@ -6,52 +6,89 @@ class Maxwell::ShoppingCartTest < Minitest::Test
     let (:item) { Struct.new(:name) }
     let (:milk) { item.new('milk') }
     let (:bread) { item.new('bread') }
+    let (:banana) { item.new('banana') }
+    let (:apple) { item.new('apple') }
 
     before do
       3.times { cart.add(milk) }
-      2.times { cart.add(bread) }
+      4.times { cart.add(bread) }
+      1.times { cart.add(apple) }
+      1.times { cart.add(banana) }
     end
 
     describe 'attributes' do
       it 'items' do assert cart.items end
+      # it 'savings' do assert cart.savings end
     end
 
     describe 'Public methods' do
       it '#total' do
-        expect = 14.50
+        expect = 19.02
         assert_equal expect, cart.total
       end
 
       it '#add' do
         assert_equal bread, cart.add(bread)
       end
+
+      it '#add does not blow up' do
+        cart.empty_cart
+        cheese = item.new('cheese')
+        assert_equal 'Sorry not here', cart.add(cheese)
+      end
+
+      it '#sub_total_cart' do
+        expect = [["milk", 3, 8.97], ["bread", 4, 8.17], ["apple", 1, 0.89], ["banana", 1, 0.99]]
+        assert_equal expect, cart.sub_total_cart
+      end
+
+      it 'the savings' do
+        expect = 3.45
+        assert_equal expect, cart.savings
+      end
+
+      it 'remove all items' do
+        assert_equal [], cart.empty_cart
+      end
+
+      it 'savings is only when items quality' do
+        cart.empty_cart
+        cart.add(milk)
+        assert_equal 0, cart.savings
+      end
     end
 
     describe 'Private methods. OKAY to delete if they break' do
-      it '#sub_total_cart' do
-        expect = [['milk', 3, 10.50], ['bread', 2, 4.00]]
-        assert_equal expect, cart.send(:sub_total_cart)
-      end
 
       it '#group_items' do
         expect = {
-          "milk" => ["milk", "milk", "milk"],
-          "bread" => ["bread", "bread"]
+          "milk"   => ["milk", "milk", "milk"],
+          "bread"  => ["bread", "bread", "bread", "bread"],
+          "apple"  => ["apple"],
+          "banana" => ["banana"]
         }
+
         assert_equal expect, cart.send(:group_items)
       end
 
       it '#group_items' do
-        expect = [
-          ['milk', 3],
-          ['bread', 2]
-        ]
+        expect = [["milk", 3], ["bread", 4], ["apple", 1], ["banana", 1]]
         assert_equal expect, cart.send(:count_items)
       end
 
       it '#get price' do
-        expect = 3.50
+        expect = 3.97
         assert_equal expect, cart.send(:get_price, milk.name)
+      end
+
+      it 'price' do
+        expect = 8.97
+        assert_equal expect, cart.send(:price, ['milk', 3])
+      end
+
+      it 'get_sale' do
+        expect =  { quantity: 2, price: 500 }
+        assert_equal expect, cart.send(:get_sale,milk.name)
       end
     end
   end
