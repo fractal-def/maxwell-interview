@@ -2,13 +2,22 @@ require "test_helper"
 
 class Maxwell::Http::GithubUsersTest < Minitest::Test
   describe 'Github User API' do
+
+    let (:request) { Maxwell::Http::GithubUsers.new(base: mock_base) }
+
     let (:user) { 'dhh' }
-    let (:request) { Maxwell::Http::GithubUsers.new(user: user) }
     let (:url) { 'https://api.github.com/' }
     let (:path) { "users/#{user}/events/public" }
-    let (:base) { Maxwell::Http::Base }
-    let (:fake_response) { Struct.new(:code, :body) }
-    let (:response_stub) { fake_response.new }
+
+    let (:mock_base) { Struct.new(:get) }
+    let (:mock_request) { Struct.new(:body, :status_code) }
+    let (:mock_response) { mock_request.new }
+
+    before do
+      mock_response.status_code = 200
+      mock_response.body = "{}"
+      request.base.get = mock_response
+    end
 
     it 'Instance identity' do
       assert_instance_of Maxwell::Http::GithubUsers, request
@@ -22,24 +31,15 @@ class Maxwell::Http::GithubUsersTest < Minitest::Test
 
     describe 'methods' do
       it '#get' do
-        response_stub.code = 200
-        base.stub :get, (response_stub) do
-            assert_equal request, request.get
-        end
+        assert_equal request, request.get
       end
 
       it '#status_code' do
-        response_stub.code = 200
-        base.stub :get, (response_stub) do
-            assert_equal 200, request.get.status_code
-        end
+        assert_equal mock_response.status_code, request.get.status_code
       end
 
       it '#body' do
-        response_stub.body = {}
-        base.stub :get, (response_stub) do
-            assert_equal({}, request.get.body)
-        end
+        assert_equal(mock_response.body, request.get.body)
       end
     end
   end

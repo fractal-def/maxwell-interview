@@ -5,7 +5,7 @@ module Maxwell
 
       URL = 'https://api.github.com/'
 
-      def initialize(user:, base: Base)
+      def initialize(user:'dhh', base: Base)
         @url = URL
         @user = user
         @path = "users/#{user}/events/public"
