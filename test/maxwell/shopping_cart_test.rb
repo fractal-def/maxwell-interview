@@ -3,11 +3,11 @@ require "test_helper"
 class Maxwell::ShoppingCartTest < Minitest::Test
   describe 'ShoppingCart' do
     let (:cart) { Maxwell::ShoppingCart.new }
-    let (:item) { Struct.new(:name) }
-    let (:milk) { item.new('milk') }
-    let (:bread) { item.new('bread') }
-    let (:banana) { item.new('banana') }
-    let (:apple) { item.new('apple') }
+    let (:item) { Maxwell::Item }
+    let (:milk) { item.new(name: 'milk', price: 397) }
+    let (:bread) { item.new(name: 'bread', price: 217) }
+    let (:banana) { item.new(name: 'banana', price: 99) }
+    let (:apple) { item.new(name: 'apple', price: 89) }
 
     before do
       3.times { cart.add(milk) }
@@ -18,7 +18,7 @@ class Maxwell::ShoppingCartTest < Minitest::Test
 
     describe 'attributes' do
       it 'items' do assert cart.items end
-      # it 'savings' do assert cart.savings end
+      it 'savings' do assert cart.savings end
     end
 
     describe 'Public methods' do
@@ -33,7 +33,7 @@ class Maxwell::ShoppingCartTest < Minitest::Test
 
       it '#add does not blow up' do
         cart.empty_cart
-        cheese = item.new('cheese')
+        cheese = item.new(name: 'cheese', price: 0)
         assert_equal 'Sorry not here', cart.add(cheese)
       end
 

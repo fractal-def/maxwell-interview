@@ -1,7 +1,5 @@
 require_relative './shopping_cart'
 
-Item = Struct.new(:name)
-
 MESSAGES = {
   start: 'Please enter all the items purchased separated by a comma',
   total: 'Total price : $',
@@ -42,8 +40,14 @@ module Maxwell
     def get_input
       print "> "
       @items = gets
-      parse_items
       add_items_to_cart
+    end
+
+    def add_items_to_cart
+      parse_items.map do |i|
+        item = Item.new(i)
+        cart.add(item)
+      end
     end
 
     def parse_items
@@ -53,13 +57,6 @@ module Maxwell
     def print_cart
       cart.sub_total_cart.each do |item|
         printf("%-19s %-8s $%s\n", item[0], item[1], item[2])
-      end
-    end
-
-    def add_items_to_cart
-      parse_items.map do |i|
-        item = Item.new(i)
-        cart.add(item)
       end
     end
 
