@@ -19,7 +19,6 @@ CreateEvent = 2
 Any other event = 1
 ```
 
-
 ### Task
 
 Write a ruby program which when executed prints the score of https://github.com/dhh . The answer printed on the terminal should be like this.
