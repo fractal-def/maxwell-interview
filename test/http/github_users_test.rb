@@ -1,14 +1,12 @@
 require "test_helper"
+require_relative '../../lib/http/github_users'
 
-class Maxwell::Http::GithubUsersTest < Minitest::Test
+class Http::GithubUsersTest < Minitest::Test
   describe 'Github User API' do
-
-    let (:request) { Maxwell::Http::GithubUsers.new(base: mock_base) }
-
+    subject { Http::GithubUsers.new(base: mock_base) }
     let (:user) { 'dhh' }
     let (:url) { 'https://api.github.com/' }
     let (:path) { "users/#{user}/events/public" }
-
     let (:mock_base) { Struct.new(:get) }
     let (:mock_request) { Struct.new(:body, :status_code) }
     let (:mock_response) { mock_request.new }
@@ -16,30 +14,30 @@ class Maxwell::Http::GithubUsersTest < Minitest::Test
     before do
       mock_response.status_code = 200
       mock_response.body = "{}"
-      request.base.get = mock_response
+      subject.base.get = mock_response
     end
 
     it 'Instance identity' do
-      assert_instance_of Maxwell::Http::GithubUsers, request
+      assert_instance_of Http::GithubUsers, subject
     end
 
     describe 'attributes' do
-      it '#url' do assert_equal(url, request.url) end
-      it '#user' do assert_equal user, request.user end
-      it '#path' do assert_equal path, request.path end
+      it '#url' do assert_equal(url, subject.url) end
+      it '#user' do assert_equal user, subject.user end
+      it '#path' do assert_equal path, subject.path end
     end
 
     describe 'methods' do
       it '#get' do
-        assert_equal request, request.get
+        assert_equal subject, subject.get
       end
 
       it '#status_code' do
-        assert_equal mock_response.status_code, request.get.status_code
+        assert_equal mock_response.status_code, subject.get.status_code
       end
 
       it '#body' do
-        assert_equal(mock_response.body, request.get.body)
+        assert_equal(mock_response.body, subject.get.body)
       end
     end
   end

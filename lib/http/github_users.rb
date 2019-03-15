@@ -1,4 +1,3 @@
-module Maxwell
   module Http
     class GithubUsers
       attr_reader :url, :user, :path, :response, :base
@@ -26,4 +25,3 @@ module Maxwell
       end
     end
   end
-end

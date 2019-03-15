@@ -1,6 +1,5 @@
 require 'HTTParty'
 
-module Maxwell
   module Http
     class Base
       include HTTParty
@@ -44,5 +43,4 @@ module Maxwell
       }
     end
   end
-end
 end
