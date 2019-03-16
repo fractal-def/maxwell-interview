@@ -1,0 +1,12 @@
+# Configure points for event types.
+# For available types, see https://developer.github.com/v3/activity/events/types
+
+# Required: Any unmatched event type will be given the default point value.
+Default: 1
+
+IssuesEvent: 7
+IssueCommentEvent: 6
+PushEvent: 5
+PullRequestReviewCommentEvent: 4
+WatchEvent: 3
+CreateEvent: 2
