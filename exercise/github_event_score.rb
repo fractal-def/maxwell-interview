@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class GithubEventScore
-  def self.run!(username, point_config)
-    new(username, GithubEventConfig.new(point_config)).score
-  end
-
   attr_reader :username, :point_config
 
   def initialize(username, point_config)

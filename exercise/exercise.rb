@@ -1,12 +1,12 @@
 dir = File.expand_path(__dir__)
 $LOAD_PATH.unshift(dir)
+
 require 'psych'
 require 'github_event_config'
 require 'github_event_score'
+require 'exercise_runner'
 
-config_file = File.join(dir, 'event_points.yml')
+username    = ARGV[0] || 'DHH'
+config_path = ARGV[1] || File.join(dir, 'event_points.yml')
 
-username     = ARGV.first || 'DHH'
-point_config = Psych.load(File.read(config_file))
-
-GithubEventScore.run!(username, point_config)
+ExerciseRunner.run!(username: username, config_path: config_path)
