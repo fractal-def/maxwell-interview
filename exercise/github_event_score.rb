@@ -9,7 +9,7 @@ class GithubEventScore
   end
 
   def events
-    [{'type' => 'IssuesEvent'}, {'type' => 'UnknownEvent'}]
+    @events ||= GithubEventFeed.get(username)
   end
 
   def score
