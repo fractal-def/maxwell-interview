@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class GithubEventScore
   def self.run!(username, point_config)
-    new(username, point_config).score
+    new(username, GithubEventConfig.new(point_config)).score
   end
 
   attr_reader :username, :point_config
@@ -10,6 +12,13 @@ class GithubEventScore
     @point_config = point_config
   end
 
+  def events
+    [{'type' => 'IssuesEvent'}, {'type' => 'UnknownEvent'}]
+  end
+
   def score
+    events.reduce(0) do |sum, event|
+      sum += point_config[event['type']]
+    end
   end
 end

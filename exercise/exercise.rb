@@ -1,6 +1,7 @@
 dir = File.expand_path(__dir__)
 $LOAD_PATH.unshift(dir)
 require 'psych'
+require 'github_event_config'
 require 'github_event_score'
 
 config_file = File.join(dir, 'event_points.yml')
