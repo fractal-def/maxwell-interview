@@ -7,6 +7,7 @@ require 'grocery_config'
 require 'grocery_prompt'
 require 'grocery_item_group'
 require 'grocery_calculator'
+require 'receipt_printer'
 require 'exercise_runner'
 
 config_path = ARGV.first || File.join(dir, 'grocery_config.yml')

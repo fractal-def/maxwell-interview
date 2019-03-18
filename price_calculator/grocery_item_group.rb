@@ -6,6 +6,10 @@ class GroceryItemGroup
     @quantity = 0
   end
 
+  def name
+    @grocery_item.product
+  end
+
   def price
     sale_items_price + standard_items_price
   end

@@ -3,5 +3,7 @@ class ExerciseRunner
     config     = GroceryConfig.new(config_path)
     prompt     = GroceryPrompt.new(config)
     calculator = GroceryCalculator.new(prompt.input, config)
+
+    ReceiptPrinter.new(calculator).print
   end
 end

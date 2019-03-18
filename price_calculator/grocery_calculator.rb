@@ -1,4 +1,6 @@
 class GroceryCalculator
+  attr_reader :groceries
+
   def initialize(groceries, config)
     grouped_groceries = groceries.each_with_object({}) do |name, memo|
       item = config.inventory[name]
