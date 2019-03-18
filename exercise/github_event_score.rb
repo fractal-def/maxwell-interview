@@ -13,8 +13,6 @@ class GithubEventScore
   end
 
   def score
-    events.reduce(0) do |sum, event|
-      sum += point_config[event['type']]
-    end
+    events.reduce(0) { |sum, event| sum + point_config[event['type']] }
   end
 end
