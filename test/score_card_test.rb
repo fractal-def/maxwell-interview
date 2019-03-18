@@ -1,5 +1,6 @@
 require "test_helper"
 require_relative '../lib/score_card'
+require_relative '../lib/http/github_users'
 
 class ScoreCardTest < Minitest::Test
   describe 'ScoreCard' do

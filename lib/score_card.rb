@@ -44,7 +44,6 @@ class ScoreCard
     JSON.parse(data.body)
   end
 
-
   def event_count(total)
     total.inject(Hash.new(0)) do |event, count|
       event[count] += 1

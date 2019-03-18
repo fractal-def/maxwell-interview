@@ -1,3 +1,5 @@
+require_relative './base'
+
   module Http
     class GithubUsers
       attr_reader :url, :user, :path, :response, :base
