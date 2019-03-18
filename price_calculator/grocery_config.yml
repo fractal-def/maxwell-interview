@@ -1,20 +1,18 @@
 prompt: Please enter all the items purchased separated by a comma
 inventory:
   -
-    product:    Milk
-    unit_price: 3.97
-    sale:
-      price:    5.0
-      quantity: 2
+    product:       Milk
+    unit_price:    3.97
+    sale_price:    5.0
+    sale_quantity: 2
   -
-    product:    Bread
-    unit_price: 2.17
-    sale:
-      price:    6.0
-      quantity: 3
+    product:       Bread
+    unit_price:    2.17
+    sale_price:    6.0
+    sale_quantity: 3
   -
-    product:    Banana
-    unit_price: 0.99
+    product:       Banana
+    unit_price:    0.99
   -
-    product:    Apple
-    unit_price: 0.89
+    product:       Apple
+    unit_price:    0.89

@@ -3,10 +3,6 @@
 class GroceryPrompt
   def initialize(config)
     @config = config
-    @valid_inventory = config
-                         .inventory
-                         .map { |item| item['product'].downcase }
-                         .to_set
   end
 
   def input
@@ -23,6 +19,6 @@ class GroceryPrompt
       .downcase
       .split(',')
       .map(&:strip)
-      .select { |i| @valid_inventory.include?(i) }
+      .select { |i| @config.inventory.include?(i) }
   end
 end
