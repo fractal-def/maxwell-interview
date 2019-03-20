@@ -64,6 +64,7 @@ MESSAGES = {
 
 module Maxwell
   class Printer
+
     def initialize(inventory, store: Maxwell::Collections::Store)
       @store = store.new(items: inventory)
       @cart = @store.new_cart

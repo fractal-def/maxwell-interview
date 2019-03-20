@@ -1,6 +1,7 @@
 module Maxwell
   module Items
     class Purchase < Base
+
       def initialize(inventory_cart)
         @inventory = inventory_cart[0]
         @cart = inventory_cart[1]

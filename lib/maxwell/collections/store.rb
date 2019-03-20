@@ -5,6 +5,7 @@ require_relative './checkout'
 module Maxwell
   module Collections
     class Store < Base
+
       def initialize(items:, cart: Cart, checkout: Checkout)
         @cart = cart
         @checkout = checkout
