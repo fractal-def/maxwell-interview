@@ -26,7 +26,7 @@ class ScoreCard
     @data ||= http.get
   end
 
-  private
+private
 
   def qualified_events
     event_count(events)
