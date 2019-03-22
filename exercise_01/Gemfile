@@ -1,0 +1,5 @@
+source 'https://rubygems.org'
+ruby "2.5.1"
+
+# to make HTTP requests easy
+gem 'httparty'
