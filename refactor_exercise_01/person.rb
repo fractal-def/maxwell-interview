@@ -11,7 +11,7 @@ class Person < ActiveRecord::Base
 
   private
     def set_admin
-      self.admin = false
+      self.admin = false if self.admin.nil?
     end
 
     def set_slug
