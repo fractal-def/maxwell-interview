@@ -22,3 +22,13 @@ But it also accepts a username, like this:
 ```
 $ ruby exercise.rb abunsen
 ```
+
+Finally it also supports JSON output:
+
+```
+$ ruby exercise.rb abunsen --json
+> {"score":89,"username":"abunsen"}
+
+$ ruby exercise.rb --json
+> {"score":145,"username":"dhh"}
+```
