@@ -5,7 +5,7 @@ This is a ruby program which when executed prints the score of a given github us
 ### Setting it up
 This app uses rubygems and ruby version 2.5.1. 
 
-1. You can install ruby 2.5.1 with a tool like (RBenv)[https://github.com/rbenv/rbenv] or (RVM)[https://rvm.io/]
+1. You can install ruby 2.5.1 with a tool like [RBenv](https://github.com/rbenv/rbenv) or [RVM](https://rvm.io/)
 
 2. Make sure you're in the `exercise_01` directory then run `bundle install` to download all of the package dependencies.
 
