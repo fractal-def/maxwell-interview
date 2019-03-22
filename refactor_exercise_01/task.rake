@@ -8,6 +8,6 @@ namespace :accounts do
     end
     @people.destroy_all
 
-    Emails.admin_removing_unvalidated_users(@people).deliver
+    Emails.admin_removing_unvalidated_users(@people).deliver_later
   end  
 end
