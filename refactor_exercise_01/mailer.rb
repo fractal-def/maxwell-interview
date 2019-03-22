@@ -1,5 +1,6 @@
 class Emails < ActionMailer::Base
   default from: "foo@example.com"
+  before_action :set_admins, only: admin_user_validated
 
   def welcome(person)
     @person = person
@@ -15,23 +16,25 @@ class Emails < ActionMailer::Base
     # we are using instance vars because the mailer view 
     # uses them in its template
     @user = user 
-    @admins = admins
-    mail to: admins
+    mail to: @admins
   end
   
-  def admin_new_user(admins, user)
+  def admin_new_user(user)
     # we are using instance vars because the mailer view 
     # uses them in its template
     @user = user
-    @admins = admins
-    mail to: admins
+    mail to: @admins
   end
 
-  def admin_removing_unvalidated_users(admins, users)
+  def admin_removing_unvalidated_users(users)
     # we are using instance vars because the mailer view 
     # uses them in its template
     @users = users
-    @admins = admins
-    mail to: admins
+    mail to: @admins
   end
+
+  private
+    def set_admins
+      @admins = Person.admins.pluck(:email)
+    end
 end

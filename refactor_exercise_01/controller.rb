@@ -22,9 +22,8 @@ class People < ActionController::Base
     end
 
     if @person.save
-      Emails.validate_email(@person).deliver
-      @admins = Person.where(:admin => true)
-      Emails.admin_new_user(@admins, @person).deliver
+      Emails.validate_email(@person).deliver_later
+      Emails.admin_new_user(@person).deliver_later
       redirect_to @person, :notice => "Account added!"
     else
       render :new
@@ -37,9 +36,22 @@ class People < ActionController::Base
       @user.validated = true
       @user.save
       Rails.logger.info "USER: User ##{@person.id} validated email successfully."
-      @admins = Person.where(:admin => true)
-      Emails.admin_user_validated(@admins, user)
+      Emails.admin_user_validated(user)
       Emails.welcome(@user).deliver!
     end
   end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = User.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def person_params
+      params.require(:person).permit(
+        :first_name, :last_name, :email, 
+        :slug, :validated, :handle, :team
+      )
+    end
 end

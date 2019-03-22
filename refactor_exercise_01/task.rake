@@ -1,5 +1,4 @@
-namespace :accounts do
-  
+namespace :accounts do  
   desc "Remove accounts where the email was never validated and it is over 30 days old"
   task :remove_unvalidated do
     @people = Person.invalidated
@@ -8,9 +7,7 @@ namespace :accounts do
       Rails.logger.info "Going to remove unvalidated user #{email}"
     end
     @people.destroy_all
-    Emails.admin_removing_unvalidated_users(
-      Person.admins.pluck(:email), 
-      @people
-    ).deliver
+
+    Emails.admin_removing_unvalidated_users(@people).deliver
   end  
 end
