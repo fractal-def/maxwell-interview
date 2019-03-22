@@ -13,6 +13,7 @@ class GitHubScore
   def events
     response = self.class.get("/users/#{@username}/events/public")
     raise "Too many requests" if response.code == 403
+    response
   rescue HTTParty::Error
     raise "Unable to connect"
   end
