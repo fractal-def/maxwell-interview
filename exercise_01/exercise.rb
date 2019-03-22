@@ -1,8 +1,3 @@
-require 'httparty'
-require_relative './score_calculator'
+require_relative './github_score'
 
-@calculator = ScoreCalculator.new
-@calculator.add("IssuesEvent")
-@calculator.add("IssuesEvent")
-@calculator.add("PullRequestReviewCommentEvent")
-puts "score is #{@calculator.score} (should be 18)"
+username = ARGV[1] || 'dhh'
