@@ -21,7 +21,7 @@ class People < ActionController::Base
       @user.save
       Rails.logger.info "USER: User ##{@person.id} validated email successfully."
       Emails.admin_user_validated(@user).deliver_later
-      Emails.welcome(@user).deliver!
+      Emails.welcome(@user).deliver_later
     end
   end
 
