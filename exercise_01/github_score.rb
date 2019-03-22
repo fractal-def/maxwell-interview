@@ -11,9 +11,10 @@ class GitHubScore
   end
 
   def events
-    self.class.get("/users/#{@username}/events/public")
-  rescue #Rate Limit Error?
-    # do something?
+    response = self.class.get("/users/#{@username}/events/public")
+    raise "Too many requests" if response.code == 403
+  rescue HTTParty::Error
+    raise "Unable to connect"
   end
 
   def total
