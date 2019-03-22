@@ -1,7 +1,7 @@
 require 'securerandom'
 
 class Person < ActiveRecord::Base
-  before_save :set_admin, :set_slug, :set_team
+  before_create :set_admin, :set_slug, :set_team
   scope :admins, -> { where(admin: true) }
   scope :invalidated, -> do 
     where(
