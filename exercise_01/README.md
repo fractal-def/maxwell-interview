@@ -1,6 +1,6 @@
-## Exercise 1
+## Exercise 1 Solution
 
-Write a ruby program which when executed prints the score of a given github user.
+This is a ruby program which when executed prints the score of a given github user.
 
 ### Setting it up
 This app uses rubygems and ruby version 2.5.1. 
