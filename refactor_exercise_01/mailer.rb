@@ -1,6 +1,6 @@
 class Emails < ActionMailer::Base
   default from: "foo@example.com"
-  before_action :set_admins, only: [:admin_new_user, :admin_user_validated, :admin_removing_unvalidated_users, :]
+  before_action :set_admins, only: [:admin_new_user, :admin_user_validated, :admin_removing_unvalidated_users]
 
   def welcome(person)
     @person = person
