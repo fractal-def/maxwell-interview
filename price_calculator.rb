@@ -70,10 +70,10 @@ class Item
 
   def initialize(name:, unit_price:, quantity:, sale_quantity: nil, sale_price: nil )
     @name = name
-    @unit_price = unit_price * 100
+    @unit_price = (unit_price * 100).to_i if unit_price
     @quantity = quantity
     @sale_quantity = sale_quantity
-    @sale_price = sale_price * 100
+    @sale_price = (sale_price * 100).to_i if sale_price
   end
 
   def total_due
@@ -81,7 +81,7 @@ class Item
   end
 
   def total_due_without_sale
-    (@quantity * @unit_price) / 100
+    (@quantity * @unit_price) / 100.0
   end
 
   def total_savings
@@ -91,20 +91,22 @@ class Item
   def total_price_sale_items
     return 0 unless @sale_price && @sale_quantity
 
-    (quantity_sale_groups * @sale_price) / 100
+    (quantity_sale_groups * @sale_price) / 100.0
   end
 
   def total_price_non_sale_items
-    (quantity_non_sale_items * @unit_price) / 100
+    (quantity_non_sale_items * @unit_price) / 100.0
   end
 
   # This is amount of sale groupings,
   # not the quantity of individual sale items
   def quantity_sale_groups
+    return 0 unless @sale_quantity
     @quantity / @sale_quantity
   end
 
   def quantity_non_sale_items
+    return @quantity unless @sale_quantity
     @quantity % @sale_quantity
   end
 
