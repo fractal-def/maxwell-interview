@@ -22,6 +22,8 @@ class GithubScore
   BASE_URL = "https://api.github.com/users/%s/events/public".freeze
 
   def initialize(username: 'dhh')
+    raise ArgumentError.new("username is required") if username.empty?
+
     @username = username
     @score = 0
     @url = BASE_URL % @username
@@ -46,6 +48,8 @@ class GithubScore
 
   def score_commits
     commits = get_commits
+
+    return false unless commits
 
     commits.each do |commit|
       type = commit['type'].to_sym
