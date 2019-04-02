@@ -16,56 +16,65 @@ class PriceCalculator
   end
 
   def print_receipt
+    receipt_header
 
   end
 
+  def receipt_header
+    puts
+    puts "Item     Quantity      Price"
+    puts "--------------------------------------"
+  end
+
+  # In rails I'd use number_to_currency for formatting
+  def line_item(item:)
+    puts "#{item.name.capitalize.ljust(10, ' ')}#{item.quantity.to_s.ljust(13, ' ')}$#{item.total_due}"
+  end
 
 end
 
 class Item
-  require BigDecimal
+  attr_accessor :name, :quantity
 
-  def initalize(name:, unit_price:, quantity:, sale_quantity: nil, sale_price: nil )
+  def initialize(name:, unit_price:, quantity:, sale_quantity: nil, sale_price: nil )
     @name = name
-    @unit_price = BigDecimal(unit_price) if unit_price.is_a? Numeric
+    @unit_price = unit_price * 100
     @quantity = quantity
     @sale_quantity = sale_quantity
-    @sale_price = BigDecimal(sale_price) if sale_price.is_a? Numeric
+    @sale_price = sale_price * 100
   end
 
   def total_due
-    total_sale_price + total_non_sale_price
+    total_price_sale_items + total_price_non_sale_items
   end
 
-  def total_without_sale
-    @quantity * @unit_price
+  def total_due_without_sale
+    (@quantity * @unit_price) / 100
   end
 
   def total_savings
-    total_without_sale - total_due
+    total_due_without_sale - total_due
   end
 
   def total_price_sale_items
     return 0 unless @sale_price && @sale_quantity
 
-    quantity_sale_groups * sale_price
+    (quantity_sale_groups * @sale_price) / 100
   end
 
   def total_price_non_sale_items
-    quantity_non_sale_items * @unit_price
+    (quantity_non_sale_items * @unit_price) / 100
   end
 
   # This is amount of sale groupings,
-  # not the quantity of individual items
+  # not the quantity of individual sale items
   def quantity_sale_groups
     @quantity / @sale_quantity
   end
 
-  # Number of non sale items
   def quantity_non_sale_items
     @quantity % @sale_quantity
   end
-
 
 end
 
