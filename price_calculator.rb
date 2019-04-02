@@ -11,24 +11,10 @@ class PriceCalculator
   def initialize
     puts "Please enter all the items purchased separated by a comma"
     user_input = gets.chomp
-    items = user_input.split(',').map {|item| item.strip.downcase}
-
-    # Count the quantities of each item
-    quantities = Hash.new(0)
-    items.each_with_object(quantities) { |item,quantities| quantities[item] += 1 }
-
-    # Add quantity values to list
-    quantities.each do |key, val|
-      next unless ITEM_PRICES.has_key? key.to_sym
-      ITEM_PRICES[key.to_sym] = ITEM_PRICES[key.to_sym].merge({ quantity: val })
-    end
-
+    @items = user_input.split(',').map {|item| item.strip.downcase}
     @item_objects = []
-    ITEM_PRICES.each do |key, val|
-      next unless val.has_key? :quantity
-      @item_objects << Item.new(val.merge({name: key.to_s}))
-    end
-
+    build_quantities
+    build_item_objects
   end
 
   def print_receipt
@@ -39,15 +25,20 @@ class PriceCalculator
 
   def receipt_footer
     total_price
-    # total_savings
+    total_savings
   end
 
   def total_price
-    puts "\nTotal price : $%s" % @item_objects.inject(0){|sum,item| sum + item.total_due }
+    puts ""
+    puts "Total price : $%s" % @item_objects.inject(0){|sum,item| sum + item.total_due_dollars }
+  end
+
+  def total_savings
+    puts "You saved $%s today." % @item_objects.inject(0){|sum,item| sum + item.total_savings_dollars }
   end
 
   def receipt_header
-    puts
+    puts ""
     puts "Item     Quantity      Price"
     puts "--------------------------------------"
   end
@@ -60,7 +51,26 @@ class PriceCalculator
 
   # In rails I'd use number_to_currency for formatting
   def line_item(item:)
-    puts "#{item.name.capitalize.ljust(10, ' ')}#{item.quantity.to_s.ljust(13, ' ')}$#{item.total_due}"
+    puts "#{item.name.capitalize.ljust(10, ' ')}#{item.quantity.to_s.ljust(13, ' ')}$#{item.total_due_dollars}"
+  end
+
+  def build_quantities
+    # Count the quantities of each item
+    quantities = Hash.new(0)
+    @items.each_with_object(quantities) { |item,quantities| quantities[item] += 1 }
+
+    # Add quantity values to list
+    quantities.each do |key, val|
+      next unless ITEM_PRICES.has_key? key.to_sym
+      ITEM_PRICES[key.to_sym] = ITEM_PRICES[key.to_sym].merge({ quantity: val })
+    end
+  end
+
+  def build_item_objects
+    ITEM_PRICES.each do |key, val|
+      next unless val.has_key? :quantity
+      @item_objects << Item.new(val.merge({name: key.to_s}))
+    end
   end
 
 end
@@ -80,22 +90,34 @@ class Item
     total_price_sale_items + total_price_non_sale_items
   end
 
+  def total_due_dollars
+    total_due / 100.0
+  end
+
   def total_due_without_sale
-    (@quantity * @unit_price) / 100.0
+    @quantity * @unit_price
+  end
+
+  def total_due_without_sale_dollars
+    total_due_without_sale / 100.0
   end
 
   def total_savings
     total_due_without_sale - total_due
   end
 
+  def total_savings_dollars
+    total_savings / 100.0
+  end
+
   def total_price_sale_items
     return 0 unless @sale_price && @sale_quantity
 
-    (quantity_sale_groups * @sale_price) / 100.0
+    quantity_sale_groups * @sale_price
   end
 
   def total_price_non_sale_items
-    (quantity_non_sale_items * @unit_price) / 100.0
+    quantity_non_sale_items * @unit_price
   end
 
   # This is amount of sale groupings,
