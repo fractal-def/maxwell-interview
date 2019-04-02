@@ -15,6 +15,10 @@ class PriceCalculator
 
   end
 
+  def print_receipt
+
+  end
+
 
 end
 
@@ -29,20 +33,41 @@ class Item
     @sale_price = BigDecimal(sale_price) if sale_price.is_a? Numeric
   end
 
-  def total_price
+  def total_due
+    total_sale_price + total_non_sale_price
+  end
+
+  def total_without_sale
     @quantity * @unit_price
   end
 
   def total_savings
-    total_price - total_sale_price
+    total_without_sale - total_due
   end
 
-  def total_sale_price
+  def total_price_sale_items
     return 0 unless @sale_price && @sale_quantity
 
+    quantity_sale_groups * sale_price
+  end
+
+  def total_price_non_sale_items
+    quantity_non_sale_items * @unit_price
+  end
+
+  # This is amount of sale groupings,
+  # not the quantity of individual items
+  def quantity_sale_groups
+    @quantity / @sale_quantity
+  end
+
+  # Number of non sale items
+  def quantity_non_sale_items
+    @quantity % @sale_quantity
   end
 
 
 end
 
-PriceCalculator.new
+pc = PriceCalculator.new
+pc.print_receipt
