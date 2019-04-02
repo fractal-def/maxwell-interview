@@ -1,29 +1,61 @@
 
 class PriceCalculator
 
-  ITEMS = {
+  ITEM_PRICES = {
     milk:   { unit_price: 3.97, sale_quantity: 2, sale_price: 5.00 },
     bread:  { unit_price: 2.17, sale_quantity: 3, sale_price: 6.00 },
     banana: { unit_price: 0.99 },
     apple:  { unit_price: 0.89 }
-  }.freeze
+  }
 
   def initialize
     puts "Please enter all the items purchased separated by a comma"
     user_input = gets.chomp
-    @items = user_input.split(',').map(&:strip)
+    items = user_input.split(',').map {|item| item.strip.downcase}
+
+    # Count the quantities of each item
+    quantities = Hash.new(0)
+    items.each_with_object(quantities) { |item,quantities| quantities[item] += 1 }
+
+    # Add quantity values to list
+    quantities.each do |key, val|
+      next unless ITEM_PRICES.has_key? key.to_sym
+      ITEM_PRICES[key.to_sym] = ITEM_PRICES[key.to_sym].merge({ quantity: val })
+    end
+
+    @item_objects = []
+    ITEM_PRICES.each do |key, val|
+      next unless val.has_key? :quantity
+      @item_objects << Item.new(val.merge({name: key.to_s}))
+    end
 
   end
 
   def print_receipt
     receipt_header
+    line_items
+    receipt_footer
+  end
 
+  def receipt_footer
+    total_price
+    # total_savings
+  end
+
+  def total_price
+    puts "\nTotal price : $%s" % @item_objects.inject(0){|sum,item| sum + item.total_due }
   end
 
   def receipt_header
     puts
     puts "Item     Quantity      Price"
     puts "--------------------------------------"
+  end
+
+  def line_items
+    @item_objects.each do |item|
+      line_item(item: item)
+    end
   end
 
   # In rails I'd use number_to_currency for formatting
