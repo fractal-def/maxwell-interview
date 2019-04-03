@@ -8,10 +8,8 @@ class PriceCalculator
     apple:  { unit_price: 0.89 }
   }
 
-  def initialize
-    puts "Please enter all the items purchased separated by a comma"
-    user_input = gets.chomp
-    @items_input = user_input.split(',').map {|item| item.strip.downcase}
+  def initialize(item_list:)
+    @items_input = item_list.split(',').map {|item| item.strip.downcase}
     @items = []
     build_items
   end
@@ -127,5 +125,6 @@ class Item
 
 end
 
-pc = PriceCalculator.new
+puts "Please enter all the items purchased separated by a comma"
+pc = PriceCalculator.new(item_list: gets.chomp)
 pc.print_receipt
