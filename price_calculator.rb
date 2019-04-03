@@ -11,10 +11,9 @@ class PriceCalculator
   def initialize
     puts "Please enter all the items purchased separated by a comma"
     user_input = gets.chomp
-    @items = user_input.split(',').map {|item| item.strip.downcase}
-    @item_objects = []
-    build_quantities
-    build_item_objects
+    @items_input = user_input.split(',').map {|item| item.strip.downcase}
+    @items = []
+    build_items
   end
 
   def print_receipt
@@ -32,11 +31,11 @@ class PriceCalculator
 
   def total_price
     puts ""
-    puts "Total price : $%s" % @item_objects.inject(0){|sum,item| sum + item.total_due_dollars }
+    puts "Total price : $%s" % @items.inject(0){|sum,item| sum + item.total_due_dollars }
   end
 
   def total_savings
-    puts "You saved $%s today." % @item_objects.inject(0){|sum,item| sum + item.total_savings_dollars }
+    puts "You saved $%s today." % @items.inject(0){|sum,item| sum + item.total_savings_dollars }
   end
 
   def receipt_header
@@ -46,7 +45,7 @@ class PriceCalculator
   end
 
   def line_items
-    @item_objects.each do |item|
+    @items.each do |item|
       line_item(item: item)
     end
   end
@@ -56,22 +55,16 @@ class PriceCalculator
     puts "#{item.name.capitalize.ljust(10, ' ')}#{item.quantity.to_s.ljust(13, ' ')}$#{item.total_due_dollars}"
   end
 
-  def build_quantities
+  def build_items
     # Count the quantities of each item
     quantities = Hash.new(0)
-    @items.each_with_object(quantities) { |item,quantities| quantities[item] += 1 }
+    @items_input.each_with_object(quantities) { |item,quantities| quantities[item] += 1 }
 
-    # Add quantity values to list
-    quantities.each do |key, val|
-      next unless ITEM_PRICES.has_key? key.to_sym
-      ITEM_PRICES[key.to_sym] = ITEM_PRICES[key.to_sym].merge({ quantity: val })
-    end
-  end
-
-  def build_item_objects
     ITEM_PRICES.each do |key, val|
-      next unless val.has_key? :quantity
-      @item_objects << Item.new(val.merge({name: key.to_s}))
+      key_string = key.to_s
+      next unless quantities.has_key? key_string
+
+      @items << Item.new(val.merge({ name: key_string, quantity: quantities[key_string] }))
     end
   end
 
