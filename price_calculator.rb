@@ -23,6 +23,8 @@ class PriceCalculator
     receipt_footer
   end
 
+  private
+
   def receipt_footer
     total_price
     total_savings
@@ -86,28 +88,26 @@ class Item
     @sale_price = (sale_price * 100).to_i if sale_price
   end
 
-  def total_due
-    total_price_sale_items + total_price_non_sale_items
-  end
-
   def total_due_dollars
     total_due / 100.0
+  end
+
+  def total_savings_dollars
+    total_savings / 100.0
+  end
+
+  private
+
+  def total_due
+    total_price_sale_items + total_price_non_sale_items
   end
 
   def total_due_without_sale
     @quantity * @unit_price
   end
 
-  def total_due_without_sale_dollars
-    total_due_without_sale / 100.0
-  end
-
   def total_savings
     total_due_without_sale - total_due
-  end
-
-  def total_savings_dollars
-    total_savings / 100.0
   end
 
   def total_price_sale_items
