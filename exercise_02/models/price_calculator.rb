@@ -11,7 +11,7 @@ class PriceCalculator
   def initialize(items)
     @items = Hash.new(0)
 
-    items.split(',').each do |item|
+    items.gsub(/\s+/, '').split(',').each do |item|
       @items[item.to_sym] += 1
     end
   end

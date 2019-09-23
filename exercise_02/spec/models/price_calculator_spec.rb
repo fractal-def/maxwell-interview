@@ -9,7 +9,7 @@ RSpec.describe PriceCalculator do
   end
 
   it 'correctly calculates the total and savings without items on sale' do
-    items='banana,banana,banana,apple,apple,apple,apple'
+    items='banana,banana,banana,apple,apple,apple, apple'
     price_calculator = PriceCalculator.new(items)
     expect(price_calculator.calculate_total).to eq(653)
     expect(price_calculator.calculate_savings).to eq(0)
