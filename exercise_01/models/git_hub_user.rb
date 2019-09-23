@@ -13,17 +13,21 @@ class GitHubUser
 
   def initialize(username)
     @username = username
+    @score = 0
+    @commits = []
   end
 
-  def generate_score
+  def generate_score(commits = nil)
+    @commits ||= commits
     fetch_commits
-    @score = 0
     commit_types = @commits.map{|c| snakecase(c['type'])}
 
     commit_types.each do |type|
       @score += SCORES[type.to_sym] ? SCORES[type.to_sym] : SCORES[:other]
     end
+  end
 
+  def print_score
     puts "#{@username}'s github score is #{@score}"
   end
 
@@ -47,6 +51,3 @@ class GitHubUser
     downcase
   end
 end
-
-dhh = GitHubUser.new('DHH')
-dhh.generate_score
