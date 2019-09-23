@@ -16,16 +16,6 @@ class PriceCalculator
     end
   end
 
-  def calculate_subtotal
-    subtotal = 0
-
-    @items.each do |item, units|
-      subtotal += PRICES[item][:unit_price] * units
-    end
-
-    subtotal
-  end
-
   def calculate_total
     total = 0
 
@@ -57,6 +47,10 @@ class PriceCalculator
   end
 
   private
+
+  def calculate_subtotal
+    @items.map{ |item, units| PRICES[item][:unit_price] * units }.reduce(:+)
+  end
 
   def human_friendly_price(int)
     int.to_s.reverse.gsub(/(\d{2})(?=\d)/, '\1.').reverse
