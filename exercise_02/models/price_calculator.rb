@@ -30,14 +30,17 @@ class PriceCalculator
     total = 0
 
     @items.each do |item, units|
+      unit_price = PRICES[item][:unit_price]
+      sale_price = PRICES[item][:sale_price]
       sale_from = PRICES[item][:sale_from]
-      if sale_from > 0 && units >= sale_from
+
+      if sale_price > 0 && sale_from > 0 && units >= sale_from
         regular_price_units = units % sale_from
         sale_price_units = units / sale_from
-        total += PRICES[item][:unit_price] * regular_price_units
-        total += PRICES[item][:sale_price] * sale_price_units
+        total += unit_price * regular_price_units
+        total += sale_price * sale_price_units
       else
-        total += PRICES[item][:unit_price] * units
+        total += unit_price * units
       end
     end
 
@@ -45,7 +48,7 @@ class PriceCalculator
   end
 
   def calculate_savings
-    (calculate_subtotal - calculate_total)
+    calculate_subtotal - calculate_total
   end
 
   def print_total
