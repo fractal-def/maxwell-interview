@@ -15,6 +15,16 @@ class GitHubUser
   def initialize(username)
     @username = username
   end
+
+  private
+
+  def api_endpoint
+    "https://api.github.com/users/#{@username}/events/public"
+  end
+
+  def fetch_commits
+    @commits = HTTParty.get(api_endpoint)
+  end
 end
 
 dhh = GitHubUser.new('dhh')
