@@ -48,9 +48,14 @@ class PriceCalculator
     (calculate_subtotal - calculate_total)
   end
 
-
   def print_total
-    puts "Total price: $#{calculate_total}"
-    puts "You saved $#{calculate_savings} today."
+    puts "Total price: $#{human_friendly_price(calculate_total)}."
+    puts "You saved $#{human_friendly_price(calculate_savings)} today."
+  end
+
+  private
+
+  def human_friendly_price(int)
+    int.to_s.reverse.gsub(/(\d{2})(?=\d)/, '\1.').reverse
   end
 end
