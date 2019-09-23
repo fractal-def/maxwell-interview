@@ -14,12 +14,14 @@ class GitHubUser
   def initialize(username)
     @username = username
     @score = 0
-    @commits = []
+  end
+
+  def fetch_commits
+    @commits = JSON.parse(HTTParty.get(api_endpoint).body)
   end
 
   def generate_score(commits = nil)
     @commits ||= commits
-    fetch_commits
     commit_types = @commits.map{|c| snakecase(c['type'])}
 
     commit_types.each do |type|
@@ -35,10 +37,6 @@ class GitHubUser
 
   def api_endpoint
     "https://api.github.com/users/#{@username.downcase}/events/public"
-  end
-
-  def fetch_commits
-    @commits = HTTParty.get(api_endpoint)
   end
 
   # From Rails' ActiveSupport file 'lib/core/facets/string/snakecase.rb', line 15
