@@ -17,15 +17,19 @@ class GitHubUser
   end
 
   def fetch_commits
-    @commits = JSON.parse(HTTParty.get(api_endpoint).body)
+    response = HTTParty.get(api_endpoint)
+    puts "Something went wrong with the request. Code: #{response.code}, response: #{response.body}" if response.code != 200
+    @commits = response.code == 200 ? JSON.parse(response.body) : nil
   end
 
   def generate_score(commits = nil)
     @commits ||= commits
-    commit_types = @commits.map{|c| snakecase(c['type'])}
+    if @commits
+      commit_types = @commits.map{|c| snakecase(c['type'])}
 
-    commit_types.each do |type|
-      @score += SCORES[type.to_sym] ? SCORES[type.to_sym] : SCORES[:other]
+      commit_types.each do |type|
+        @score += SCORES[type.to_sym] ? SCORES[type.to_sym] : SCORES[:other]
+      end
     end
   end
 
